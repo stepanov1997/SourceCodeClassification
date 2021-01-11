@@ -9,9 +9,9 @@ def calculate_accuracy(predictions, targets):
     return accuracy
 
 
-classes = np.load("../data/classes_of_dataset.npy", allow_pickle=True)
-class_indices = np.load("../data/class_indices_of_dataset.npy", allow_pickle=True).astype('uint8')
-source_codes_tokenized = np.load("../data/count_vectorizer_tokenized/source_codes_tokenized.npy", allow_pickle=True)
+classes = np.load("../../data/classes_of_dataset.npy", allow_pickle=True)
+class_indices = np.load("../../data/class_indices_of_dataset.npy", allow_pickle=True).astype('uint8')
+source_codes_tokenized = np.load("../../data/tokenized_data/source_codes_count_tokenized.npy", allow_pickle=True)
 
 X_train, X_test_val, y_train, y_test_val = train_test_split(source_codes_tokenized, class_indices, test_size=0.20)
 X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_size=0.50)
@@ -19,7 +19,7 @@ X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_siz
 knn = KNeighborsClassifier()
 knn.fit(X_train, y_train)
 
-with open("../data/fitted_classificators/knn_count_vect.pkl", 'wb') as f:
+with open("../../data/fitted_classificators/knn_count_vect.pkl", 'wb') as f:
     pickle.dump(knn, f)
 
 

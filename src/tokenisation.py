@@ -24,12 +24,6 @@ def tokenize(text):
     return stems
 
 
-count_vectorizer = CountVectorizer(lowercase=False, tokenizer=tokenize)
-source_codes_tokenized = count_vectorizer.fit_transform(source_codes)
-source_codes_tokenized = source_codes_tokenized.toarray().astype('uint8')
+tokenized = np.array([tokenize(source_code) for source_code in list(source_codes)])
 
-with open("../data/fitted_classificators/count_vect.pkl", 'wb') as f:
-    pickle.dump(count_vectorizer, f)
-np.save("../data/count_vectorizer_tokenized/source_codes_tokenized.npy", source_codes_tokenized)
-
-
+np.save("../data/tokenized_data/source_codes_tokenized.npy", tokenized)

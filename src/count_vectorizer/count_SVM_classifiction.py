@@ -1,0 +1,29 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+import pickle
+
+
+def calculate_accuracy(predictions, targets):
+    arr = np.array([predictions[i] == targets[i] for i in range(0, len(predictions))])
+    accuracy = np.count_nonzero(arr) / len(arr)
+    return accuracy
+
+
+classes = np.load("../../data/classes_of_dataset.npy", allow_pickle=True)
+class_indices = np.load("../../data/class_indices_of_dataset.npy", allow_pickle=True).astype('uint8')
+source_codes_tokenized = np.load("../../data/tokenized_data/source_codes_count_tokenized.npy", allow_pickle=True)
+
+X_train, X_test_val, y_train, y_test_val = train_test_split(source_codes_tokenized, class_indices, test_size=0.20)
+X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_size=0.50)
+
+svm = SVC()
+svm.fit(X_train, y_train)
+
+with open("../../data/fitted_classificators/svm_count_vect.pkl", 'wb') as f:
+    pickle.dump(svm, f)
+
+predicted = svm.predict(X_test)
+accuracy = calculate_accuracy(predicted, y_test)
+
+print(accuracy)

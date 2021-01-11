@@ -3,7 +3,7 @@ import pickle
 import nltk
 import numpy as np
 
-classes = np.load("./data/classes_of_dataset.npy", allow_pickle=True).tolist()
+classes = np.load("../../data/classes_of_dataset.npy", allow_pickle=True).tolist()
 
 
 def calculate_accuracy(predictions, targets):
@@ -28,14 +28,12 @@ def tokenize(text):
     return stems
 
 
-with open("./data/fitted_classificators/knn_count_vect.pkl", 'rb') as f:
+with open("../../data/fitted_classificators/knn_binary_vect.pkl", 'rb') as f:
     knn = pickle.load(f)
-with open("./data/fitted_classificators/count_vect.pkl", 'rb') as f:
+with open("../../data/fitted_vectorizers/binary_vect.pkl", 'rb') as f:
     vectorizer = pickle.load(f)
 
-print("to be transformed")
 #f = open("./src/dataset_maker.py", "r", encoding='UTF-8')
-php = vectorizer.transform(["System.out.println(""Hello world"")"])
-print("transformed")
-predicted = knn.predict(php)
-print(classes[predicted[0]])
+example = vectorizer.transform(["System.out.println(""Hello world"")"])
+predicted = knn.predict(example)
+print(f'Prediction for Java code: {classes[predicted[0]]}')
