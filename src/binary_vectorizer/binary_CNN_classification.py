@@ -22,7 +22,7 @@ def calculate_accuracy(predictions, targets):
 
 classes = np.load("../../data/classes_of_dataset.npy", allow_pickle=True)
 class_indices = np.load("../../data/class_indices_of_dataset.npy", allow_pickle=True).astype('uint8')
-source_codes_tokenized = np.load("../../data/tokenized_data/source_codes_binary_tokenized.npy", allow_pickle=True)
+source_codes_tokenized = np.load("../../data/tokenized_data/source_codes_without_comms_binary_tokenized.npy", allow_pickle=True)
 
 X_train, X_test_val, y_train, y_test_val = train_test_split(source_codes_tokenized, class_indices, test_size=0.20)
 X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_size=0.50)
@@ -30,25 +30,20 @@ X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_siz
 model = CNNClassificationModel(X_train.shape[1])
 
 # veličina batch-a
-BATCH_SIZE = 20
+BATCH_SIZE = 50
 # broj epoha koji se trenira
-NUM_EPOCHS = 30
+NUM_EPOCHS = 10
 
-# definisanje optimizatora
-opt = SGD(lr=0.01)
 print("[INFO] training network...")
+model.compile(loss="categorical_crossentropy", optimizer=SGD(lr=0.001), metrics=['accuracy'])
 
-model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=['accuracy'])
-
-# treniranje
 y_train = to_categorical(y_train, len(classes))
 y_test = to_categorical(y_test, len(classes))
 y_val = to_categorical(y_val, len(classes))
+model.fit(X_train, y_train, epochs=NUM_EPOCHS, batch_size=BATCH_SIZE,
+          shuffle=True, validation_data=(X_val, y_val))
 
-
-model.fit(X_train, y_train, epochs=NUM_EPOCHS, batch_size=BATCH_SIZE, shuffle=True, validation_data=(X_val, y_val))
-
-model.save("../../data/fitted_classificators/lstm_binary_vect")
+model.save("../../data/fitted_classificators/lstm_binary_vect_without_comments")
 
 loss, acc = model.evaluate(X_test, y_test, verbose=2)
 print("Untrained model, accuracy: {:5.2f}%".format(100 * acc))
