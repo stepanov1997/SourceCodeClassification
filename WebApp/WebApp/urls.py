@@ -16,9 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from SCClassificationWebApp.views import classification_endpoint
+from SCClassificationWebApp.views import linear_classification_endpoint, \
+    neural_classification_endpoint, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', classification_endpoint, name='classification_endpoint')
+    path('', home, name='home'),
+    path('linear/', linear_classification_endpoint, name='linear_classification_endpoint'),
+    path('neural_network/', neural_classification_endpoint, name='neural_classification_endpoint')
 ]

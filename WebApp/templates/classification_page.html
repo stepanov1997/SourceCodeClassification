@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Source code classification</title>
+    <link rel="stylesheet" href="{% static 'styles/classification_page.css' %}">
+    <script>
+        {% if classificated_class %}
+            window.onload = function () {
+                const img = document.getElementById("picture")
+                img.setAttribute("src", '{% static "logos/"|add:classificated_class|add:".png"|lower %}')
+            }
+        {% endif %}
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+            integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <script src="{% static 'scripts/classification_page.js' %}"></script>
+</head>
+<body>
+<div>
+    <div class="header">
+        <h3><span>Source code classifications</span></h3>
+    </div>
+    <div class="container h-100 border border-top">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-10 col-md-8 col-lg-6">
+                {% if neural %}
+                    <form action="{% url 'neural_classification_endpoint' %}" method="post"
+                          enctype="multipart/form-data"
+                          onsubmit="enableLoading()">
+
+                        <fieldset class="form-group mt-3">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0">Estimators:</legend>
+                                <div class="col-sm-10">
+                                    {% for value, name in form.CHOICES_1 %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="estimator"
+                                                   id="gridRadios1"
+                                                   value="{{ value }}" checked>
+                                            <label class="form-check-label" for="gridRadios1">
+                                                {{ name }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </fieldset>
+                        {% csrf_token %}
+                        <div class="custom-file">
+                            <input type="file" name="file" class="custom-file-input" id="file">
+                            <label class="custom-file-label" for="file">Choose file</label>
+                        </div>
+                        <div class="text-center mt-3 pb-3">
+                            <input class="btn btn-dark btn-customized" type="submit" value="Submit">
+                        </div>
+                        {{ form.subject.errors }}
+                    </form>
+                {% else %}
+                    <form action="{% url 'linear_classification_endpoint' %}" method="post"
+                          enctype="multipart/form-data"
+                          onsubmit="enableLoading()">
+
+                        {% csrf_token %}
+                        <fieldset class="form-group m-3">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0">Vectorizations:</legend>
+                                <div class="col-sm-10">
+                                    {% for value, name in form.CHOICES_2 %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="vectorization"
+                                                   id="gridRadios1"
+                                                   value="{{ value }}" checked>
+                                            <label class="form-check-label" for="gridRadios1">
+                                                {{ name }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-group m-3">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0">Estimators:</legend>
+                                <div class="col-sm-10">
+                                    {% for value, name in form.CHOICES_1 %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="estimator"
+                                                   id="gridRadios1"
+                                                   value="{{ value }}" checked>
+                                            <label class="form-check-label" for="gridRadios1">
+                                                {{ name }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-group m-3">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0"></legend>
+                                <div class="col-auto my-1">
+                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                        <input type="checkbox" name="with_comments" class="custom-control-input"
+                                               id="customControlAutosizing">
+                                        <label class="custom-control-label" for="customControlAutosizing">Without
+                                            comments?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="custom-file form-group">
+                            <input type="file" class="custom-file-input" name="file" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <div class="form-group text-center mt-3 pb-3">
+                            <input class="btn btn-dark btn-customized" type="submit" value="Submit">
+                        </div>
+                        {{ form.subject.errors }}
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container output text-center">
+        {% if classificated_class %}
+            <p class="m-0 p-3">Filename: <i><b>{{ input_file }}</b></i> ({{ type }})</p>
+        {% endif %}
+        <div class="w-100 text-center">
+            <img id="picture" alt="" src="">
+        </div>
+    </div>
+</div>
+<div class="container text-center p-3 border border-top" style="bottom: 0">
+    <h5>Author: Kristijan Stepanov</h5>
+    <h5>Subject: Multimedia systems</h5>
+</div>
+</body>
+</html>

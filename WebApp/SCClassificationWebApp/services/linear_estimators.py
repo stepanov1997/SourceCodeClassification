@@ -4,15 +4,15 @@ import re
 
 import nltk
 import numpy as np
-ROOT = "C:\\Users\\stepa\\PycharmProjects\\SCClassification"
-print()
 
+ROOT = "C:\\Users\\stepa\\PycharmProjects\\SCClassification"
 
 
 def classificate(text, type_of_estimator='knn', type_of_vectorization='binary', representation_without_comments=False):
-    text = str(text.read(),encoding='UTF-8')
+    text = str(text.read(), encoding='UTF-8')
     text = remove_python_style_comments(text) if representation_without_comments else text
-    if type_of_vectorization.lower() not in ['binary', 'count', 'tfidf'] or type_of_estimator.lower() not in ['knn','svm']:
+    if type_of_vectorization.lower() not in ['binary', 'count', 'tfidf'] or type_of_estimator.lower() not in ['knn',
+                                                                                                              'svm']:
         raise NotImplementedError
     type_of_vectorization, type_of_estimator = type_of_vectorization.lower(), type_of_estimator.lower()
 
@@ -45,6 +45,7 @@ def remove_python_style_comments(text):
 nltk.download('punkt')
 stemmer = nltk.PorterStemmer()
 minlen = 1
+
 
 def tokenize(text):
     # Funkcija koja vrši tokenizaciju teksta na sastavne riječi

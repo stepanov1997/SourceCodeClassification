@@ -3,39 +3,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Source code classification</title>
+    <title>Classification</title>
     <link rel="stylesheet" href="{% static 'styles/home.css' %}">
-    <script>
-        {% if classificated_class %}
-            window.onload = function() {
-                const img = document.getElementById("picture")
-                img.setAttribute("src", '{% static "logos/"|add:classificated_class|add:".png"|lower %}')
-            }
-        {% endif %}
-    </script>
-    <script src="{% static 'scripts/home.js' %}"></script>
 </head>
 <body>
-<h1>Source code classification</h1>
-<div>
-    <form action="{% url 'classification_endpoint' %}" method="post" enctype="multipart/form-data"
-          onsubmit="enableLoading()">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-        {{ form.subject.errors }}
-
-    </form>
-    <div>
-        {% if classificated_class %}
-            <h2>Filename: {{ input_file }}</h2>
-        {% endif %}
-        <img id="picture" alt="" src="">
+<div class="document">
+    <div class="header">
+        <h3><span>Source code classifications</span></h3>
+    </div>
+    <div class="menu">
+        <div class="menu-item">
+            <div class="img-wrapper">
+                <img src="{% static 'logos/algoritms.png' %}" alt="">
+            </div>
+            <span class="first"><a href="{% url 'linear_classification_endpoint' %}">Algoritmic classification</a></span>
+        </div>
+        <div class="menu-item">
+            <div class="img-wrapper">
+                <img src="{% static 'logos/nn.png' %}" alt="">
+            </div>
+            <span><a href="{% url 'neural_classification_endpoint' %}">Neural network classification</a></span>
+        </div>
     </div>
 </div>
-<footer>
-    <h3>Author: Kristijan Stepanov</h3>
-    <h3>Subject: Multimedia systems</h3>
-</footer>
 </body>
 </html>

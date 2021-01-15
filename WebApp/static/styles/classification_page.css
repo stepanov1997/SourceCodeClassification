@@ -1,0 +1,22 @@
+.header {
+    background-color: transparent;
+    padding: 5px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.custom-file {
+    width: 50%;
+}
+
+.form-check {
+    padding-left: 5rem !important;
+}
+
+#picture {
+    width: 200px;
+}
+
+.output {
+    height: 250px;
+}

@@ -9,7 +9,6 @@ class_indices = np.load("../data/class_indices_of_dataset.npy", allow_pickle=Tru
 source_codes = np.load("../data/source_codes_dataset.npy", allow_pickle=True)
 
 nltk.download('punkt')
-stemmer = nltk.PorterStemmer()
 minlen = 1
 
 
@@ -18,12 +17,11 @@ def tokenize(text):
     tokens = nltk.word_tokenize(text)  # Tokenizacija teksta
     stems = []
     for token in tokens:
-        stem = stemmer.stem(token)  # Stemizacija tokena
-        if len(stem) > minlen:  # Zadržavanje tokena čija je dužina veća od minlen
-            stems.append(stem)
+        if len(token) > minlen:  # Zadržavanje tokena čija je dužina veća od minlen
+            stems.append(token)
     return stems
 
 
-tokenized = np.array([tokenize(source_code) for source_code in list(source_codes)])
+tokenized = np.array([tokenize(source_code) for source_code in source_codes])
 
 np.save("../data/tokenized_data/source_codes_tokenized.npy", tokenized)

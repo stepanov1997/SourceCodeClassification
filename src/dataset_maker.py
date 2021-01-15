@@ -28,9 +28,9 @@ df = pd.read_csv(filename)
 df = df[(df["Language"] != "Go") & (df["Language"] != "Ruby")]
 df = df.drop(["Relevance", "Query", "Notes"], axis=1)
 
-under_sampling_rate = df.groupby("Language").count()['GitHubUrl'].min()
-df = df.groupby("Language").head(under_sampling_rate)
-print(df)
+# under_sampling_rate = df.groupby("Language").count()['GitHubUrl'].min()
+# df = df.groupby("Language").head(under_sampling_rate)
+# print(df)
 
 classes = list(df.Language.unique())
 
@@ -58,6 +58,6 @@ array = df.to_numpy()
 class_indices = array[:, 0]
 source_codes = array[:, 1]
 
-np.save("../data/normalisation/classes_of_dataset.npy", np.array(classes))
-np.save("../data/normalisation/class_indices_of_dataset.npy", class_indices)
-np.save("../data/normalisation/source_codes_dataset.npy", source_codes)
+np.save("../data/classes_of_dataset.npy", np.array(classes))
+np.save("../data/class_indices_of_dataset.npy", class_indices)
+np.save("../data/source_codes_dataset.npy", source_codes)

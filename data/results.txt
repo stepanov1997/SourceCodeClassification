@@ -1,0 +1,30 @@
+binary_KNN_classification=0.7585227272727273
+binary_KNN_classification_without_comments=0.7386363636363636
+count_KNN_classification=0.9204545454545454
+count_KNN_classification_without_comments=0.9630681818181818
+tfidf_KNN_classification=0.8920454545454546
+tfidf_KNN_classification_without_comments=0.5909090909090909
+
+binary_SVM_classification=0.9715909090909091
+binary_SVM_classification_without_comments=0.9744318181818182
+count_SVM_classification=0.8863636363636364
+count_SVM_classification_without_comments=0.9005681818181818
+tfidf_SVM_classification=0.9659090909090909
+tfidf_SVM_classification:without_comments=0.625
+
+Text classification with neural networks:
+
+1. Dense layer
+Epoch 10/10
+45/45 [==============================] - 86s 2s/step - loss: 1.0944 - accuracy: 0.5813 - val_loss: 1.0696 - val_accuracy: 0.5836
+
+Test set:
+6/6 [==============================] - 5s 862ms/step - loss: 1.0417 - accuracy: 0.6250
+
+
+2. Conv1D layer
+Epoch 10/10
+23/23 [==============================] - 502s 22s/step - loss: 0.0188- accuracy: 0.9943 - val_loss: 0.0377 - val_accuracy: 0.9915
+
+Test set:
+3/3 [==============================] - 9s 3s/step - loss: 0.0417 - accuracy: 0.9858
